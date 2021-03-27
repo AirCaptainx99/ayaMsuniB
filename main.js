@@ -49,9 +49,10 @@ client.on('message', (msg) => {
     let words = "";
     switch (args[0].toLowerCase()) {
         case 'wtfwrite':
-            let logStream = fs.createWriteStream('user.txt', {flags: w});
-            logStream._write('cok');
-            logStream.end('hai');
+            fs.appendFile('user.txt', 'Hello content!', function (err) {
+                if (err) throw err;
+                console.log('Saved!');
+              });
             break;
         case 'wtfread':
             fs.readFile('user.txt', async function read (err, data) {
@@ -315,3 +316,4 @@ client.on('message', (msg) => {
 */
 
 client.login(process.env.token);
+// client.login('ODIxMDUwOTkyMDk1MTMzNjk3.YE-FUg.d5xllxs3BY20K37YWzzBMhNAkHY')
