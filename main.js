@@ -48,6 +48,16 @@ client.on('message', (msg) => {
     let args = msg.content.slice(prefix.length).split(" ");
     let words = "";
     switch (args[0].toLowerCase()) {
+        case 'wtfwrite':
+            let logStream = fs.createWriteStream('user.txt', {flags: w});
+            logStream._write('cok');
+            logStream.end('hai');
+            break;
+        case 'wtfread':
+            let logStream = fs.readFile('user.txt', async function read (err, data) {
+                if (err) throw err;
+                msg.channel.send(data.toString());
+            })
         case 'ping':
             msg.channel.send('Pong!');
             break;
@@ -225,11 +235,11 @@ client.on('message', (msg) => {
             });
             break;
         case 'register':
-            var logStream = fs.createWriteStream('user-list', {flags: a});
-
-            logStream._write('test');
-            logStream.end('hai');
-            break;
+            function saveEmailPass(){
+                let newEmail, newPass;
+                newEmail = arguments[0];
+                newPass = arguments[1];
+            }
 
             async function getEmailPass(){
                 let filter = m => emailContent;
