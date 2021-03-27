@@ -306,4 +306,4 @@ client.on('message', (msg) => {
     * https://www.youtube.com/watch?v=I7eZY-SBmf8 (Embed Message)
 */
 
-client.login('ODIxMDUwOTkyMDk1MTMzNjk3.YE-FUg.d5xllxs3BY20K37YWzzBMhNAkHY');
+client.login(process.env.token);
