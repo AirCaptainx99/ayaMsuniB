@@ -54,7 +54,7 @@ client.on('message', (msg) => {
             logStream.end('hai');
             break;
         case 'wtfread':
-            let logStream = fs.readFile('user.txt', async function read (err, data) {
+            fs.readFile('user.txt', async function read (err, data) {
                 if (err) throw err;
                 msg.channel.send(data.toString());
             })
