@@ -1,0 +1,23 @@
+{
+  "name": "ssalcayamsunib",
+  "version": "1.0.0",
+  "description": "Check for Binus Maya class schedule",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AirCaptainx99/ssalCayaMsuniB.git"
+  },
+  "author": "Jeffryco Ardiya",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AirCaptainx99/ssalCayaMsuniB/issues"
+  },
+  "homepage": "https://github.com/AirCaptainx99/ssalCayaMsuniB#readme",
+  "dependencies": {
+    "discord.js": "^12.5.1",
+    "puppeteer": "^8.0.0"
+  }
+}
