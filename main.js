@@ -225,13 +225,11 @@ client.on('message', (msg) => {
             });
             break;
         case 'register':
-            function saveEmailPass(){
-                let newEmail, newPass;
-                newEmail = arguments[0];
-                newPass = arguments[1];
+            var logStream = fs.createWriteStream('user-list', {flags: a});
 
-                
-            }
+            logStream._write('test');
+            logStream.end('hai');
+            break;
 
             async function getEmailPass(){
                 let filter = m => emailContent;
