@@ -1,1 +1,1 @@
-Worker: node --trace-warnings --no-sandbox main.js
+Worker: node --trace-warnings main.js
