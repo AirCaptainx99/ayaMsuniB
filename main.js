@@ -16,6 +16,7 @@ String.prototype.isLunarYear = function() {
 }
 
 String.prototype.dayOfYear = function() {
+    if (!this) return Infinity;
     let date = this.toLowerCase().trim().split(' ');
     let num = parseInt(date[0]);
     if (date[1] === 'jan' || date[1] === 'january') num += 0;
@@ -104,7 +105,15 @@ client.on('message', (msg) => {
                     }
                 }
 
-                (!args[2]) ? dayAmount = 1 : dayAmount = args[2];
+                if (args[2]){
+                    if (!(args[2].toLowerCase() === 'max') && !args[2].isNumber()){
+                        let err = new Discord.MessageEmbed()
+                        .setColor('#FFFFFF')
+                        .setTitle('Second Argument is not valid!');
+                        msg.channel.send(err);
+                        return;
+                    }
+                }
                 
                 (async () => {
                     let progressInfo = new Discord.MessageEmbed()
@@ -174,16 +183,23 @@ client.on('message', (msg) => {
                     .setTitle('Schedule List')
                     .setDescription('Owner: [<@!' + selectID + '>]');
 
+                    (!args[2]) ? dayAmount = 0 : dayAmount = args[2];
+
                     let endPoint = serverTime.dayOfYear() + parseInt(dayAmount);
-                    while (result.date[otherIdx].dayOfYear() < endPoint) {
+                    if (args[2]){
+                        if (args[2].toLowerCase() === 'max') endPoint = result.date[result.date.length - 1].dayOfYear();
+                        else if (endPoint > result.date[result.date.length - 1].dayOfYear()) endPoint = result.date[result.date.length - 1].dayOfYear();
+                    }
+
+                    while (result.date[otherIdx] && result.date[otherIdx].dayOfYear() <= endPoint) {
                         if (scheduleListData[idx] == result.date[otherIdx]){
                             if (!scheduleListData[idx+1].includes(result.time[otherIdx])){
                                 scheduleListData[idx+1] += '`' + result.time[otherIdx] + '`';
-                                if (result.mode[otherIdx] == 'VC'){
-                                    scheduleListData[idx+1] += ' `' + result.classCode[otherIdx] + '`' + '[' + result.course[otherIdx].split('-')[1] + '](' + result.vicon[otherIdx].split('\"')[1] + ')' + '\n';
-                                }
-                                else if (result.mode[otherIdx] == 'GSLC'){
+                                if (result.mode[otherIdx] == 'GSLC' || result.vicon[otherIdx] === '-'){
                                     scheduleListData[idx+1] += ' `' + result.classCode[otherIdx] + '`' + result.course[otherIdx].split('-')[1] + '\n';
+                                }
+                                else if (result.mode[otherIdx] == 'VC'){
+                                    scheduleListData[idx+1] += ' `' + result.classCode[otherIdx] + '`' + '[' + result.course[otherIdx].split('-')[1] + '](' + result.vicon[otherIdx].split('\"')[1] + ')' + '\n';
                                 }
                             }
                         }
@@ -192,11 +208,11 @@ client.on('message', (msg) => {
                             idx += 2;
                             scheduleListData[idx] = result.date[otherIdx];
                             scheduleListData[idx+1] += '`' + result.time[otherIdx] + '`';
-                            if (result.mode[otherIdx] == 'VC'){
-                                scheduleListData[idx+1] += ' `' + result.classCode[otherIdx] + '`' + '[' + result.course[otherIdx].split('-')[1] + '](' + result.vicon[otherIdx].split('\"')[1] + ')' + '\n';
-                            }
-                            else if (result.mode[otherIdx] == 'GSLC'){
+                            if (result.mode[otherIdx] == 'GSLC' || result.vicon[otherIdx] === '-'){
                                 scheduleListData[idx+1] += ' `' + result.classCode[otherIdx] + '`' + result.course[otherIdx].split('-')[1] + '\n';
+                            }
+                            else if (result.mode[otherIdx] == 'VC'){
+                                scheduleListData[idx+1] += ' `' + result.classCode[otherIdx] + '`' + '[' + result.course[otherIdx].split('-')[1] + '](' + result.vicon[otherIdx].split('\"')[1] + ')' + '\n';
                             }
                         }
                         otherIdx++;
