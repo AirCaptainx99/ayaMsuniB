@@ -1,1 +1,1 @@
-Worker: node main.js --unhandled-rejections=strict
+Worker: node main.js
