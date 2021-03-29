@@ -120,8 +120,8 @@ client.on('message', (msg) => {
                     .setTitle('Acquiring data from the website');
                     let progressMsg = await msg.channel.send(progressInfo);
 
-                    const browser = await puppeteer.launch({ headless: true }, {
-                        args: [
+                    const browser = await puppeteer.launch({
+                        'args': [
                             '--no-sandbox',
                             '--disable-setuid-sandbox',
                           ],
