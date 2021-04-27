@@ -52,7 +52,7 @@ client.on('message', (msg) => {
     setInterval(() => {
       const date = new Date(); // today
       if (date.getHours() === 17 && date.getMinutes() === 7) {
-        const targetChannel = message.guild.channels.cache.get('ChannelID');
+        const targetChannel = msg.guild.channels.cache.get('ChannelID');
         if (targetChannel)
           targetChannel
           .send('**Hello**')
