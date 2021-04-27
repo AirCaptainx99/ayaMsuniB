@@ -44,12 +44,8 @@ client.on('ready', () => {
 });
 
 client.on('message', (msg) => {
-    if (!msg.content.startsWith(prefix) || msg.author.bot) return;
-
-    let args = msg.content.slice(prefix.length).split(" ");
-    let words = "";
     
-    setInterval(() => {
+      setInterval(() => {
       const date = new Date(); // today
       if (date.getHours() === 17) {
         const targetChannel = msg.guild.channels.cache.get('ChannelID');
@@ -66,6 +62,10 @@ client.on('message', (msg) => {
       }
     }, 60000); // check every minute
     
+    if (!msg.content.startsWith(prefix) || msg.author.bot) return;
+
+    let args = msg.content.slice(prefix.length).split(" ");
+    let words = "";
     switch (args[0].toLowerCase()) {
         case 'wtfwrite':
             fs.appendFile('user.txt', 'Hello content!', function (err) {
