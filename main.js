@@ -67,8 +67,8 @@ client.on('message', (msg) => {
                 msg.channel.send(data.toString());
             })
         case 'ping':
-            msg.channel.send('Pong!');
-            console.log('Ping');
+            let date = new Date();
+            msg.channel.send('Pong!' + ' ' + date.getHours() + ' ' + date.getMinutes() + ' ' + date.getSeconds());
             break;
         case 'prefix':
             if (!args[1]) msg.channel.send('Command is not valid, please correctly input the command');
