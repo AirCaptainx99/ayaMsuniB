@@ -47,8 +47,11 @@ client.on('message', (msg) => {
     
     setInterval(() => {
     let date = new Date(); // today
-        console.log(date.getHours() + ' ' + date.getMinutes());
-    }, 1000); // check every minute
+        if (0 <= date.getHours() && date.getHours() <= 12 && date.getHours() % 2 === 0 && date.getMinutes() === 0) {
+            msg.channel.send('Coba cek jadwal cuy!');
+            
+        }
+    }, 60000); // check every minute
     
     if (!msg.content.startsWith(prefix) || msg.author.bot) return;
 
