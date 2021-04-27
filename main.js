@@ -48,19 +48,9 @@ client.on('message', (msg) => {
       setInterval(() => {
       let date = new Date(); // today
       if (date.getHours() === 17) {
-        const targetChannel = msg.guild.channels.cache.get('ChannelID');
-        if (targetChannel)
-          targetChannel
-          .send('**Hello**')
-          .then((m) => {
-            m.delete(86400000);
-          })
-          .then((m) => {
-            m.edit('Editing...');
-          });
-        message.channel.send('Hello');
+        console.log(date.getHours() + ' ' + date.getMinutes());
       }
-    }, 60000); // check every minute
+    }, 1000); // check every minute
     
     if (!msg.content.startsWith(prefix) || msg.author.bot) return;
 
