@@ -68,6 +68,7 @@ client.on('message', (msg) => {
             })
         case 'ping':
             msg.channel.send('Pong!');
+            console.log('Ping');
             break;
         case 'prefix':
             if (!args[1]) msg.channel.send('Command is not valid, please correctly input the command');
