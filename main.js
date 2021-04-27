@@ -48,6 +48,24 @@ client.on('message', (msg) => {
 
     let args = msg.content.slice(prefix.length).split(" ");
     let words = "";
+    
+    setInterval(() => {
+      const date = new Date(); // today
+      if (date.getHours() === 17 && date.getMinutes() === 7) {
+        const targetChannel = message.guild.channels.cache.get('ChannelID');
+        if (targetChannel)
+          targetChannel
+          .send('**Hello**')
+          .then((m) => {
+            m.delete(86400000);
+          })
+          .then((m) => {
+            m.edit('Editing...');
+          });
+        message.channel.send('Hello');
+      }
+    }, 60000); // check every minute
+    
     switch (args[0].toLowerCase()) {
         case 'wtfwrite':
             fs.appendFile('user.txt', 'Hello content!', function (err) {
