@@ -45,11 +45,9 @@ client.on('ready', () => {
 
 client.on('message', (msg) => {
     
-      setInterval(() => {
-      let date = new Date(); // today
-      if (date.getHours() === 17) {
+    setInterval(() => {
+    let date = new Date(); // today
         console.log(date.getHours() + ' ' + date.getMinutes());
-      }
     }, 1000); // check every minute
     
     if (!msg.content.startsWith(prefix) || msg.author.bot) return;
