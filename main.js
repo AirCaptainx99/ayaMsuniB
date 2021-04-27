@@ -51,7 +51,7 @@ client.on('message', (msg) => {
     
     setInterval(() => {
       const date = new Date(); // today
-      if (date.getHours() === 17 && date.getMinutes() === 7) {
+      if (date.getHours() === 17 && date.getMinutes() === 9) {
         const targetChannel = msg.guild.channels.cache.get('ChannelID');
         if (targetChannel)
           targetChannel
