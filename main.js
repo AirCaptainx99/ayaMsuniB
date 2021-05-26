@@ -36,7 +36,7 @@ String.prototype.dayOfYear = function() {
 
 var email = ['jeffryco.ardiya', 'willie.soo'];
 var pass = ['b!Nu$21042002', 'b!Nu$01082002'];
-var userID = ['323460378895843330', ];
+var userID = ['323460378895843330', '323637366474539009'];
 var user = ['AirCaptainx99#9961', 'Niax'];
 
 client.on('ready', () => {
