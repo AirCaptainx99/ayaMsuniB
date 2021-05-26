@@ -44,7 +44,8 @@ client.on('ready', () => {
 });
 
 client.on('message', (msg) => {
-    
+
+    /*
     setInterval(() => {
     let date = new Date(); // today
         if (0 <= date.getHours() && date.getHours() <= 12 && date.getHours() % 2 === 0 && date.getMinutes() === 0) {
@@ -52,6 +53,7 @@ client.on('message', (msg) => {
             
         }
     }, 60000); // check every minute
+    */
     
     if (!msg.content.startsWith(prefix) || msg.author.bot) return;
 
@@ -74,7 +76,8 @@ client.on('message', (msg) => {
             msg.channel.send('Pong!' + ' ' + date.getHours() + ' ' + date.getMinutes() + ' ' + date.getSeconds());
             break;
         case 'id':
-            msg.channel.send(msg.channel.userID)
+            msg.channel.send(msg.author.id);
+            break;
         case 'prefix':
             if (!args[1]) msg.channel.send('Command is not valid, please correctly input the command');
             else {
