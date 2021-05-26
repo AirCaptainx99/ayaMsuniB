@@ -4,7 +4,8 @@ help;
 schedule;
 schedule [index_of_student] [length_of_days];
 schedule [username_of_student] [length_of_days];
-register
+register;
+id
 
 Pong!;
 To change the prefix of the bot's;
@@ -12,4 +13,5 @@ To show this GUI;
 To show the list of student(s) who has registered;
 To get the schedule of the student with their index, input numbers on the second argument (1 as default when this field is left empty) or type 'max';
 To get the schedule of the student with their discord name, input numbers on the second argument (1 as default when this field is left empty) or type 'max';
-To register your account
+To register your account;
+To get your discord ID

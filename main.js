@@ -34,10 +34,10 @@ String.prototype.dayOfYear = function() {
     return num;
 }
 
-var email = ['jeffryco.ardiya'];
-var pass = ['b!Nu$21042002'];
-var userID = ['323460378895843330'];
-var user = ['AirCaptainx99#9961']
+var email = ['jeffryco.ardiya', 'willie.soo'];
+var pass = ['b!Nu$21042002', 'b!Nu$01082002'];
+var userID = ['323460378895843330', ];
+var user = ['AirCaptainx99#9961', 'Niax'];
 
 client.on('ready', () => {
     console.log('I\'m ready!');
@@ -73,6 +73,8 @@ client.on('message', (msg) => {
             let date = new Date();
             msg.channel.send('Pong!' + ' ' + date.getHours() + ' ' + date.getMinutes() + ' ' + date.getSeconds());
             break;
+        case 'id':
+            msg.channel.send(msg.channel.userID)
         case 'prefix':
             if (!args[1]) msg.channel.send('Command is not valid, please correctly input the command');
             else {
