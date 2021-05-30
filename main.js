@@ -34,10 +34,10 @@ String.prototype.dayOfYear = function() {
     return num;
 }
 
-var email = ['jeffryco.ardiya', 'willie.soo'];
-var pass = ['b!Nu$21042002', 'b!Nu$01082002'];
-var userID = ['323460378895843330', '323637366474539009'];
-var user = ['AirCaptainx99#9961', 'Niax#6355'];
+var email = ['jeffryco.ardiya', 'willie.soo', 'albert.lucky'];
+var pass = ['b!Nu$21042002', 'b!Nu$01082002', 'Eap180218'];
+var userID = ['323460378895843330', '323637366474539009', '314580482534670338'];
+var user = ['AirCaptainx99#9961', 'Niax#6355', 'AhokJr#9476'];
 
 client.on('ready', () => {
     console.log('I\'m ready!');
