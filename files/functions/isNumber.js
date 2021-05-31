@@ -3,5 +3,5 @@ String.prototype.isNumber = function() {
 }
 
 module.exports = {
-    isNumber();
+    isNumber,
 }
