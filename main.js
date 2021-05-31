@@ -351,5 +351,5 @@ client.on('message', (msg) => {
     * https://youtu.be/nt9M-rlbWc8 (Export Import)
 */
 
-// client.login(process.env.token);
-client.login('ODIxMDUwOTkyMDk1MTMzNjk3.YE-FUg.d5xllxs3BY20K37YWzzBMhNAkHY')
+client.login(process.env.token);
+// client.login('ODIxMDUwOTkyMDk1MTMzNjk3.YE-FUg.d5xllxs3BY20K37YWzzBMhNAkHY')
