@@ -1,40 +1,7 @@
-// const Discord = require('discord.js');
-// const client = new Discord.Client();
-// const puppeteer = require('puppeteer');
-// const { on } = require('events');
-
 const { Discord, client, puppeteer, on } = require('./files/core_module.js');
-const { ping } = require('./files/function_lists.js');
+const { ping, isNumber, dayOfYear } = require('./files/function_lists.js');
 
 var prefix = "!";
-
-String.prototype.isNumber = function() {
-    return /^\d+$/.test(this);
-}
-
-String.prototype.isLunarYear = function() {
-    if ((this % 4 == 0 && this % 100 != 0) || this % 400 == 0) return true;
-    else return false;
-}
-
-String.prototype.dayOfYear = function() {
-    if (!this) return Infinity;
-    let date = this.toLowerCase().trim().split(' ');
-    let num = parseInt(date[0]);
-    if (date[1] === 'jan' || date[1] === 'january') num += 0;
-    else if (date[1] === 'feb' || date[1] === 'february') num += 31;
-    else if (date[1] === 'mar' || date[1] === 'march') (date[2].isLunarYear()) ? num += 60 : num += 59;
-    else if (date[1] === 'apr' || date[1] === 'april') (date[2].isLunarYear()) ? num += 91 : num += 90;
-    else if (date[1] === 'may') (date[2].isLunarYear()) ? num += 121 : num += 120;
-    else if (date[1] === 'jun' || date[1] === 'june') (date[2].isLunarYear()) ? num += 152 : num += 151;
-    else if (date[1] === 'jul' || date[1] === 'july') (date[2].isLunarYear()) ? num += 182 : num += 181;
-    else if (date[1] === 'aug' || date[1] === 'august') (date[2].isLunarYear()) ? num += 213 : num += 212;
-    else if (date[1] === 'sep' || date[1] === 'september') (date[2].isLunarYear()) ? num += 244 : num += 243;
-    else if (date[1] === 'okt' || date[1] === 'oktober') (date[2].isLunarYear()) ? num += 274 : num += 273;
-    else if (date[1] === 'nov' || date[1] === 'november') (date[2].isLunarYear()) ? num += 305 : num += 304;
-    else if (date[1] === 'dec' || date[1] === 'december') (date[2].isLunarYear()) ? num += 335 : num += 334;
-    return num;
-}
 
 var email = ['jeffryco.ardiya', 'willie.soo', 'albert.lucky'];
 var pass = ['b!Nu$21042002', 'b!Nu$01082002', 'Eap180218'];
@@ -62,20 +29,7 @@ client.on('message', (msg) => {
     let args = msg.content.slice(prefix.length).split(" ");
     let words = "";
     switch (args[0].toLowerCase()) {
-        case 'wtfwrite':
-            fs.appendFile('user.txt', 'Hello content!', function (err) {
-                if (err) throw err;
-                console.log('Saved!');
-              });
-            break;
-        case 'wtfread':
-            fs.readFile('user.txt', async function read (err, data) {
-                if (err) throw err;
-                msg.channel.send(data.toString());
-            })
         case 'ping':
-            // let date = new Date();
-            // msg.channel.send('Pong!' + ' ' + date.getHours() + ' ' + date.getMinutes() + ' ' + date.getSeconds());
             ping(msg);
             break;
         case 'id':
@@ -101,7 +55,7 @@ client.on('message', (msg) => {
             
             else{
                 let selectEmail, selectPass, selectID, dayAmount;
-                if (args[1].isNumber()){
+                if (isNumber(args[1])){
                     if (args[1] > user.length || args[1] <= 0) {
                         msg.channel.send('Index not valid!');
                         return;
@@ -111,7 +65,7 @@ client.on('message', (msg) => {
                     selectID = userID[args[1] - 1];
                 }
 
-                else if (!args[1].isNumber()){
+                else if (!isNumber(args[1])){
                     let key = args[1].toLowerCase();
                     for (let i = 0; i < email.length; i++){
                         if (user[i].toLowerCase().includes(key)){
@@ -124,7 +78,7 @@ client.on('message', (msg) => {
                 }
 
                 if (args[2]){
-                    if (!(args[2].toLowerCase() === 'max') && !args[2].isNumber()){
+                    if (!(args[2].toLowerCase() === 'max') && !isNumber(args[2])){
                         let err = new Discord.MessageEmbed()
                         .setColor('#FFFFFF')
                         .setTitle('Second Argument is not valid!');
@@ -208,13 +162,13 @@ client.on('message', (msg) => {
 
                     (!args[2]) ? dayAmount = 0 : dayAmount = args[2];
 
-                    let endPoint = serverTime.dayOfYear() + parseInt(dayAmount);
+                    let endPoint = dayOfYear(serverTime) + parseInt(dayAmount);
                     if (args[2]){
-                        if (args[2].toLowerCase() === 'max') endPoint = result.date[result.date.length - 1].dayOfYear();
-                        else if (endPoint > result.date[result.date.length - 1].dayOfYear()) endPoint = result.date[result.date.length - 1].dayOfYear();
+                        if (args[2].toLowerCase() === 'max') endPoint = dayOfYear(result.date[result.date.length - 1]);
+                        else if (endPoint > dayOfYear(result.date[result.date.length - 1])) endPoint = dayOfYear(result.date[result.date.length - 1]);
                     }
 
-                    while (result.date[otherIdx] && result.date[otherIdx].dayOfYear() <= endPoint) {
+                    while (result.date[otherIdx] && dayOfYear(result.date[otherIdx]) <= endPoint) {
                         if (scheduleListData[idx] == result.date[otherIdx]){
                             if (!scheduleListData[idx+1].includes(result.time[otherIdx])){
                                 scheduleListData[idx+1] += '`' + result.time[otherIdx] + '`';
@@ -355,5 +309,5 @@ client.on('message', (msg) => {
     * https://youtu.be/nt9M-rlbWc8 (Export Import)
 */
 
-client.login(process.env.token);
-// client.login('ODIxMDUwOTkyMDk1MTMzNjk3.YE-FUg.d5xllxs3BY20K37YWzzBMhNAkHY')
+// client.login(process.env.token);
+client.login('ODIxMDUwOTkyMDk1MTMzNjk3.YE-FUg.d5xllxs3BY20K37YWzzBMhNAkHY')

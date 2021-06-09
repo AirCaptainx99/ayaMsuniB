@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/AirCaptainx99/ssalCayaMsuniB#readme",
   "dependencies": {
-    "discord.js": "^12.5.1",
+    "discord.js": "^12.5.3",
     "puppeteer": "^8.0.0"
   }
 }
