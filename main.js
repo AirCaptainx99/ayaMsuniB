@@ -4,10 +4,10 @@ const { ping, isNumber, dayOfYear, changePrefix } = require('./files/function_li
 
 var prefix = "!";
 
-// var email = ['jeffryco.ardiya', 'willie.soo', 'albert.lucky'];
-// var pass = ['b!Nu$21042002', 'b!Nu$01082002', 'Eap180218'];
-// var userID = ['323460378895843330', '323637366474539009', '314580482534670338'];
-// var user = ['AirCaptainx99#9961', 'Niax#6355', 'AhokJr#9476'];
+var email = ['jeffryco.ardiya', 'willie.soo', 'albert.lucky'];
+var pass = ['b!Nu$21042002', 'b!Nu$01082002', 'Eap180218'];
+var userID = ['323460378895843330', '323637366474539009', '314580482534670338'];
+var user = ['AirCaptainx99#9961', 'Niax#6355', 'AhokJr#9476'];
 
 var database = '';
 
@@ -398,5 +398,5 @@ client.on('message', (msg) => {
     * https://youtu.be/nt9M-rlbWc8 (Export Import)
 */
 
-// client.login(process.env.token);
-client.login('ODIxMDUwOTkyMDk1MTMzNjk3.YE-FUg.d5xllxs3BY20K37YWzzBMhNAkHY')
+client.login(process.env.token);
+// client.login('ODIxMDUwOTkyMDk1MTMzNjk3.YE-FUg.d5xllxs3BY20K37YWzzBMhNAkHY')
