@@ -1,29 +1,59 @@
-const { Discord, client, puppeteer, on } = require('./files/core_module.js');
-const { ping, isNumber, dayOfYear } = require('./files/function_lists.js');
+const { MessageEmbed } = require('discord.js');
+const { Discord, client, puppeteer, on, fs, http } = require('./files/core_module.js');
+const { ping, isNumber, dayOfYear, changePrefix } = require('./files/function_lists.js');
 
 var prefix = "!";
 
-var email = ['jeffryco.ardiya', 'willie.soo', 'albert.lucky'];
-var pass = ['b!Nu$21042002', 'b!Nu$01082002', 'Eap180218'];
-var userID = ['323460378895843330', '323637366474539009', '314580482534670338'];
-var user = ['AirCaptainx99#9961', 'Niax#6355', 'AhokJr#9476'];
+// var email = ['jeffryco.ardiya', 'willie.soo', 'albert.lucky'];
+// var pass = ['b!Nu$21042002', 'b!Nu$01082002', 'Eap180218'];
+// var userID = ['323460378895843330', '323637366474539009', '314580482534670338'];
+// var user = ['AirCaptainx99#9961', 'Niax#6355', 'AhokJr#9476'];
+
+var database = '';
 
 client.on('ready', () => {
-    console.log('I\'m ready!');
+
+    var options = {
+        host: 'ik.imagekit.io',
+        path: '/adx3pkqj0s6/ayaMsuniBDB.txt' + '?ie=' + (new Date()).getTime(),
+    }
+
+    var request = http.request(options, function (res) {
+        res.on('data', function (chunk) {
+            database += chunk;
+        });
+        res.on('end', function () {
+            database = database.split('\r\n<guild>\r\n');
+            console.log(database.length);
+            console.log(database);
+            console.log('I\'m ready!');
+        });
+    });
+    request.on('error', function (e) {
+        console.log(e.message);
+    });
+    request.end();
 });
 
 client.on('message', (msg) => {
 
-    /*
-    setInterval(() => {
-    let date = new Date(); // today
-        if (0 <= date.getHours() && date.getHours() <= 12 && date.getHours() % 2 === 0 && date.getMinutes() === 0) {
-            msg.channel.send('Coba cek jadwal cuy!');
-            
+    var prefix = '!';
+    var isGuild;
+    var guildIdx = -1;
+
+    for (var i = 0; i < database.length - 1; i++){
+        if (!msg.guild) {
+            isGuild = false;
+            break;
         }
-    }, 60000); // check every minute
-    */
-    
+        if (msg.guild.id === database[i].split('\r\n<data>\r\n')[0]){
+            prefix = database[i].split('\r\n<data>\r\n')[1];
+            guildIdx = i;
+            isGuild = true;
+            break;
+        }
+    }
+
     if (!msg.content.startsWith(prefix) || msg.author.bot) return;
 
     let args = msg.content.slice(prefix.length).split(" ");
@@ -33,13 +63,41 @@ client.on('message', (msg) => {
             ping(msg);
             break;
         case 'id':
-            msg.channel.send(msg.author.id);
+            let message = new MessageEmbed();
+            if (isGuild){
+                message
+                .setColor('#FFFFFF')
+                .setDescription('User ID: ' + msg.author.id + '\n' + 'Server ID: ' + msg.guild.id);
+            }
+            else{
+                message
+                .setColor('#FFFFFF')
+                .setDescription('User ID: ' + msg.author.id);
+            }
+            msg.channel.send(message);
             break;
         case 'prefix':
-            if (!args[1]) msg.channel.send('Command is not valid, please correctly input the command');
+            if (!args[1]){
+                var msgError = new MessageEmbed()
+                .setColor("#FFFFFF")
+                .setDescription("Command is not valid, please correctly input the command");
+
+                msg.channel.send(msgError);
+            } 
             else {
-                prefix = args[1];
-                msg.channel.send('The prefix has been changed into ' + prefix);
+                database = changePrefix(msg, database, args[1]);
+                var msgSuccess = new MessageEmbed();
+                if (guildIdx === -1){
+                    msgSuccess
+                    .setColor("#FFFFFF")
+                    .setDescription('The prefix has been changed into ' + database[database.length - 2].split('\r\n<data>\r\n')[1]);
+                }
+                else{
+                    msgSuccess
+                    .setColor("#FFFFFF")
+                    .setDescription('The prefix has been changed into ' + database[guildIdx].split('\r\n<data>\r\n')[1]);
+                }
+                msg.channel.send(msgSuccess);
             }
             break;
         case 'schedule':
@@ -225,7 +283,7 @@ client.on('message', (msg) => {
                 .setColor('#FFFFFF')
                 .setTitle('List of Commands')
                 .setDescription(words);
-                msg.channel.send(embedHelp);
+                msg.channel.send(data.toString());
             });
             break;
         case 'register':
@@ -296,6 +354,37 @@ client.on('message', (msg) => {
             }
 
             getEmailPass();
+            break;
+        case 'read':
+            var link = args[1].split('/');
+            var head = link[2];
+            var tail = '';
+
+            for (let i = 3; i < link.length; i++){
+                tail += '/';
+                tail += link[i];
+            }
+            console.log(head);
+            console.log(tail);
+
+            var options = {
+                host: head,
+                path: tail,
+            }
+            var request = http.request(options, function (res) {
+                var data = '';
+                res.on('data', function (chunk) {
+                    data += chunk;
+                });
+                res.on('end', function () {
+                    console.log(data);
+
+                });
+            });
+            request.on('error', function (e) {
+                console.log(e.message);
+            });
+            request.end();
             break;
         default:
             msg.channel.send('Wrong command input');

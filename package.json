@@ -17,7 +17,13 @@
   },
   "homepage": "https://github.com/AirCaptainx99/ssalCayaMsuniB#readme",
   "dependencies": {
+    "cloudinary": "^1.26.0",
     "discord.js": "^12.5.3",
-    "puppeteer": "^8.0.0"
+    "imagekit": "^3.1.2",
+    "mysql": "^2.18.1",
+    "prohairesis": "^1.2.4",
+    "puppeteer": "^8.0.0",
+    "streamifier": "^0.1.1",
+    "streamify": "^1.0.0"
   }
 }
