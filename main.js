@@ -200,35 +200,59 @@ client.on('message', (msg) => {
                         };
                     });
 
-                    progressInfo = new Discord.MessageEmbed()
-                    .setTitle('Creating List of Schedule');
-                    progressMsg.edit(progressInfo);
+                    if (result.date.length == 2){
+                        progressInfo = new Discord.MessageEmbed()
+                        .setColor('#FFFFFF')
+                        .setTitle('Schedule List')
+                        .setDescription('Owner: [<@!' + selectID + '>]' + '\n\n' + '**No upcoming class in the near future!**');
 
-                    let otherIdx = 2, idx = 0;
-                    let scheduleListData = [];
-                    for (let i = 0; i < result.date.length - 2; i++){
-                        scheduleListData[i] = '';
+                        progressMsg.edit(progressInfo);
                     }
-                    scheduleListData[idx] = result.date[otherIdx];
-                    let serverTime = result.serverTime.toString().toLowerCase().split(' ');
-                    serverTime = serverTime[1] + ' ' + serverTime[2] + ' ' + serverTime[3];
-
-                    progressInfo = new Discord.MessageEmbed()
-                    .setColor('#FFFFFF')
-                    .setTitle('Schedule List')
-                    .setDescription('Owner: [<@!' + selectID + '>]');
-
-                    (!args[2]) ? dayAmount = 0 : dayAmount = args[2];
-
-                    let endPoint = dayOfYear(serverTime) + parseInt(dayAmount);
-                    if (args[2]){
-                        if (args[2].toLowerCase() === 'max') endPoint = dayOfYear(result.date[result.date.length - 1]);
-                        else if (endPoint > dayOfYear(result.date[result.date.length - 1])) endPoint = dayOfYear(result.date[result.date.length - 1]);
-                    }
-
-                    while (result.date[otherIdx] && dayOfYear(result.date[otherIdx]) <= endPoint) {
-                        if (scheduleListData[idx] == result.date[otherIdx]){
-                            if (!scheduleListData[idx+1].includes(result.time[otherIdx])){
+                    else{ 
+                        progressInfo = new Discord.MessageEmbed()
+                        .setTitle('Creating List of Schedule');
+                        progressMsg.edit(progressInfo);
+    
+                        let otherIdx = 2, idx = 0;
+                        let scheduleListData = [];
+                        for (let i = 0; i < result.date.length - 2; i++){
+                            scheduleListData[i] = '';
+                        }
+                        scheduleListData[idx] = result.date[otherIdx];
+                        let serverTime = result.serverTime.toString().toLowerCase().split(' ');
+                        serverTime = serverTime[1] + ' ' + serverTime[2] + ' ' + serverTime[3];
+    
+                        progressInfo = new Discord.MessageEmbed()
+                        .setColor('#FFFFFF')
+                        .setTitle('Schedule List')
+                        .setDescription('Owner: [<@!' + selectID + '>]');
+    
+                        (!args[2]) ? dayAmount = 0 : dayAmount = args[2];
+    
+                        let endPoint = dayOfYear(serverTime) + parseInt(dayAmount);
+                        if (args[2]){
+                            if (args[2].toLowerCase() === 'max') endPoint = dayOfYear(result.date[result.date.length - 1]);
+                            else if (endPoint > dayOfYear(result.date[result.date.length - 1])) endPoint = dayOfYear(result.date[result.date.length - 1]);
+                        }
+                        while (result.date[otherIdx] && dayOfYear(result.date[otherIdx]) <= endPoint) {
+                           if (scheduleListData[idx] == result.date[otherIdx]){
+                                if (!scheduleListData[idx+1]){
+                                    scheduleListData[idx+1] = '';
+                                }
+                                if (!scheduleListData[idx+1].includes(result.time[otherIdx])){
+                                    scheduleListData[idx+1] += '`' + result.time[otherIdx] + '`';
+                                    if (result.mode[otherIdx] == 'GSLC' || result.vicon[otherIdx] === '-'){
+                                        scheduleListData[idx+1] += ' `' + result.classCode[otherIdx] + '`' + result.course[otherIdx].split('-')[1] + '\n';
+                                    }
+                                    else if (result.mode[otherIdx] == 'VC'){
+                                        scheduleListData[idx+1] += ' `' + result.classCode[otherIdx] + '`' + '[' + result.course[otherIdx].split('-')[1] + '](' + result.vicon[otherIdx].split('\"')[1] + ')' + '\n';
+                                    }
+                                }
+                            }
+                            else{
+                                progressInfo.addField(scheduleListData[idx], scheduleListData[idx+1]);
+                                idx += 2;
+                                scheduleListData[idx] = result.date[otherIdx];
                                 scheduleListData[idx+1] += '`' + result.time[otherIdx] + '`';
                                 if (result.mode[otherIdx] == 'GSLC' || result.vicon[otherIdx] === '-'){
                                     scheduleListData[idx+1] += ' `' + result.classCode[otherIdx] + '`' + result.course[otherIdx].split('-')[1] + '\n';
@@ -237,25 +261,11 @@ client.on('message', (msg) => {
                                     scheduleListData[idx+1] += ' `' + result.classCode[otherIdx] + '`' + '[' + result.course[otherIdx].split('-')[1] + '](' + result.vicon[otherIdx].split('\"')[1] + ')' + '\n';
                                 }
                             }
+                            otherIdx++;
                         }
-                        else{
-                            progressInfo.addField(scheduleListData[idx], scheduleListData[idx+1]);
-                            idx += 2;
-                            scheduleListData[idx] = result.date[otherIdx];
-                            scheduleListData[idx+1] += '`' + result.time[otherIdx] + '`';
-                            if (result.mode[otherIdx] == 'GSLC' || result.vicon[otherIdx] === '-'){
-                                scheduleListData[idx+1] += ' `' + result.classCode[otherIdx] + '`' + result.course[otherIdx].split('-')[1] + '\n';
-                            }
-                            else if (result.mode[otherIdx] == 'VC'){
-                                scheduleListData[idx+1] += ' `' + result.classCode[otherIdx] + '`' + '[' + result.course[otherIdx].split('-')[1] + '](' + result.vicon[otherIdx].split('\"')[1] + ')' + '\n';
-                            }
-                        }
-                        otherIdx++;
+                        progressInfo.addField(scheduleListData[idx], scheduleListData[idx+1]);
+                        progressMsg.edit(progressInfo);
                     }
-
-                    progressInfo.addField(scheduleListData[idx], scheduleListData[idx+1]);
-                    
-                    progressMsg.edit(progressInfo);
                     await browser.close();
                 })();
             }
@@ -398,5 +408,5 @@ client.on('message', (msg) => {
     * https://youtu.be/nt9M-rlbWc8 (Export Import)
 */
 
-client.login(process.env.token);
-// client.login('ODIxMDUwOTkyMDk1MTMzNjk3.YE-FUg.d5xllxs3BY20K37YWzzBMhNAkHY')
+// client.login(process.env.token);
+client.login('ODIxMDUwOTkyMDk1MTMzNjk3.YE-FUg.d5xllxs3BY20K37YWzzBMhNAkHY')
