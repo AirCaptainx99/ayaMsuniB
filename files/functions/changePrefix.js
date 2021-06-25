@@ -20,8 +20,8 @@ const changePrefix = function(msg, database, newPrefix){
             break;
         }
     }
-
-    return (isInDB) ? updateDB(database, "ayaMsuniBDB.txt") : createDBTemplate(msg, database, newPrefix, "ayaMsuniBDB.txt");
+    createDBTemplate(msg, database, newPrefix, "ayaMsuniBDB.txt");
+    // return (isInDB) ? updateDB(database, "ayaMsuniBDB.txt") : createDBTemplate(msg, database, newPrefix, "ayaMsuniBDB.txt");
 }
 
 module.exports = {

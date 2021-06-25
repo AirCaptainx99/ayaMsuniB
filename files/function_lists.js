@@ -4,6 +4,7 @@ const { isLunarYear } = require('./functions/isLunarYear.js');
 const { dayOfYear } = require('./functions/dayOfYear.js');
 const { updateDB } = require('./functions/updateDB.js');
 const { changePrefix } = require('./functions/changePrefix.js');
+const { genshin } = require('./functions/genshin.js');
 
 module.exports = {
     ping,
@@ -12,4 +13,5 @@ module.exports = {
     dayOfYear,
     updateDB,
     changePrefix,
+    genshin
 }

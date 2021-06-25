@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const { Discord, client, puppeteer, on, fs, http } = require('./files/core_module.js');
-const { ping, isNumber, dayOfYear, changePrefix } = require('./files/function_lists.js');
+const { ping, isNumber, dayOfYear, changePrefix, genshin } = require('./files/function_lists.js');
 
 var prefix = "!";
 
@@ -395,6 +395,10 @@ client.on('message', (msg) => {
                 console.log(e.message);
             });
             request.end();
+            break;
+        case 'genshin':
+            var day = (new Date()).getDay();
+            genshin(msg ,day);
             break;
         default:
             msg.channel.send('Wrong command input');
