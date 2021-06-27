@@ -35,7 +35,7 @@ const genshin = async function (msg, day){
             message.addField('Mondstadt Talent: Ballad', 'Fischl\nKaeya\nLisa\nVenti\nAlbedo\nRosaria');
             message.addField('Liyue Talent: Gold', 'Beidou\nXingqiu\nZhongli\nXinyan\nYanfei');
             break;
-        case 7 :
+        case 0 :
             message.setDescription('**Kebuka Semua Goblock**');
             break;
     }
