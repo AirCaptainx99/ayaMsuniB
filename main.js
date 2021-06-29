@@ -24,8 +24,6 @@ client.on('ready', () => {
         });
         res.on('end', function () {
             database = database.split('\r\n<guild>\r\n');
-            console.log(database.length);
-            console.log(database);
             console.log('I\'m ready!');
         });
     });
@@ -285,15 +283,14 @@ client.on('message', (msg) => {
                 }
                 var commandQty = commands.length;
 
-                for (let i = 0; i < commandQty; i++){
-                    words += '\n\n' + prefix + commands[i] + '\n';
-                    words += '- ' + description[i];
-                }
                 embedHelp = new Discord.MessageEmbed()
                 .setColor('#FFFFFF')
-                .setTitle('List of Commands')
-                .setDescription(words);
-                msg.channel.send(data.toString());
+                .setTitle('List of Commands');
+
+                for (let i = 0; i < commandQty; i++){
+                    embedHelp.addField(prefix + commands[i], '-' + description[i]);
+                }
+                msg.channel.send(embedHelp);
             });
             break;
         case 'register':
@@ -412,5 +409,5 @@ client.on('message', (msg) => {
     * https://youtu.be/nt9M-rlbWc8 (Export Import)
 */
 
-// client.login(process.env.token);
-client.login('ODIxMDUwOTkyMDk1MTMzNjk3.YE-FUg.d5xllxs3BY20K37YWzzBMhNAkHY')
+client.login(process.env.token);
+// client.login('ODIxMDUwOTkyMDk1MTMzNjk3.YE-FUg.d5xllxs3BY20K37YWzzBMhNAkHY')
