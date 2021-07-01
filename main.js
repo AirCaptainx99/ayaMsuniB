@@ -1,6 +1,6 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, TextChannel } = require('discord.js');
 const { Discord, client, puppeteer, on, fs, http } = require('./files/core_module.js');
-const { ping, isNumber, dayOfYear, changePrefix, genshin } = require('./files/function_lists.js');
+const { ping, isNumber, dayOfYear, changePrefix, genshin, updateDB } = require('./files/function_lists.js');
 
 var prefix = "!";
 
@@ -23,15 +23,23 @@ client.on('ready', () => {
             database += chunk;
         });
         res.on('end', function () {
-            database = database.split('\r\n<guild>\r\n');
+            database = database.split('\r\n<split>\r\n');
             console.log('I\'m ready!');
         });
     });
+    
     request.on('error', function (e) {
         console.log(e.message);
     });
     request.end();
 });
+
+let newUsers = '';
+
+client.on('guildCreate', (guild) => {
+    console.log(guild.members.cache.map(member => member.id));
+    console.log(guild.members.cache.map(member => member.user.tag));
+})
 
 client.on('message', (msg) => {
 
@@ -272,15 +280,8 @@ client.on('message', (msg) => {
             let commands, description;
             fs.readFile('command-list.txt', async function read(err, data) {
                 if (err) throw err;
-
-                if (data.toString().includes('\r\n\r\n')){
-                    commands = data.toString().split('\r\n\r\n')[0].split(';\r\n');
-                    description = data.toString().split('\r\n\r\n')[1].split(';\r\n');
-                }
-                else{
-                    commands = data.toString().split('\n\n')[0].split(';\n');
-                    description = data.toString().split('\n\n')[1].split(';\n');
-                }
+                commands = data.toString().split('\r\n\r\n')[0].split(';\r\n');
+                description = data.toString().split('\r\n\r\n')[1].split(';\r\n');
                 var commandQty = commands.length;
 
                 embedHelp = new Discord.MessageEmbed()
@@ -409,5 +410,5 @@ client.on('message', (msg) => {
     * https://youtu.be/nt9M-rlbWc8 (Export Import)
 */
 
-client.login(process.env.token);
-// client.login('ODIxMDUwOTkyMDk1MTMzNjk3.YE-FUg.d5xllxs3BY20K37YWzzBMhNAkHY')
+// client.login(process.env.token);
+client.login('ODIxMDUwOTkyMDk1MTMzNjk3.YE-FUg.d5xllxs3BY20K37YWzzBMhNAkHY')

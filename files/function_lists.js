@@ -5,6 +5,7 @@ const { dayOfYear } = require('./functions/dayOfYear.js');
 const { updateDB } = require('./functions/updateDB.js');
 const { changePrefix } = require('./functions/changePrefix.js');
 const { genshin } = require('./functions/genshin.js');
+const { initiateNewGuild } = require('./functions/initiateNewGuild.js');
 
 module.exports = {
     ping,
@@ -13,5 +14,6 @@ module.exports = {
     dayOfYear,
     updateDB,
     changePrefix,
-    genshin
+    genshin,
+    initiateNewGuild
 }
