@@ -25,10 +25,10 @@ const imageKitWrapper = (str) => {
 }
 
 const initiateNewGuild = function(guild) {
-    guild.members.cache
-    .filter(x => x.user.bot)
-    .each(x => {
-        fileName = x.user.id + ".txt";
+    let members = guild.members.cache.filter(x => x.user.bot).map(x => x.user.id);
+
+    for (let i = 0; i < members.length; i++){
+        fileName = members[i] + '.txt';
         let options = {
             host: "ik.imagekit.io",
             path: "/adx3pkqj0s6/UserDiscordDB/" + fileName + '?ie=' + (new Date()).getTime(),
@@ -48,7 +48,14 @@ const initiateNewGuild = function(guild) {
             console.log(e.message);
         });
         request.end();
-    });
+    }
+
+    // guild.members.cache
+    // .filter(x => x.user.bot)
+    // .each(x => {
+    //     fileName = x.user.id + ".txt";
+ 
+    // });
     
     // fileName = "Babibu.txt";
     // imageKitWrapper("test");
