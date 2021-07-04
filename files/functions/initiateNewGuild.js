@@ -1,3 +1,5 @@
+// using recurssion cause I'm FUCKING SUCK AT ASYNC AND AWAIT
+
 const { Discord, http, Imagekit } = require("../core_module.js");
 
 let folder = "/UserDiscordDB/";
@@ -8,30 +10,14 @@ var imagekit = new Imagekit({
     urlEndpoint : "https://ik.imagekit.io/adx3pkqj0s6"
 });
 
-let fileName = '';
-const imageKitWrapper = (str) => {
-    imagekit.upload({
-        file: Buffer.from(str),
-        fileName: fileName,
-        useUniqueFileName: false,
-        folder: folder,
-    }, (error, res) => {
-        if(error) {
-            console.log(error);
-        } else {
-            console.log(res);
-        }
-    });
-}
-
 const initiateNewGuild = function(guild) {
-    let members = guild.members.cache.filter(x => x.user.bot).map(x => x.user.id);
+    const memberName = guild.members.cache.filter(x => !x.user.bot).map(x => x.user.username);
+    const fileName = guild.members.cache.filter(x => !x.user.bot).map(x => x.user.id);
 
-    for (let i = 0; i < members.length; i++){
-        fileName = members[i] + '.txt';
+    const imageKitWrapper = (i) => {
         let options = {
             host: "ik.imagekit.io",
-            path: "/adx3pkqj0s6/UserDiscordDB/" + fileName + '?ie=' + (new Date()).getTime(),
+            path: "/adx3pkqj0s6/UserDiscordDB/" + fileName[i] + '.txt' + '?ie=' + (new Date()).getTime(),
         }
         let request = http.request(options, function (res) {
             let data = '';
@@ -40,9 +26,27 @@ const initiateNewGuild = function(guild) {
             });
             res.on('end', function(){
                 if (data === 'Not Found'){
-                    imageKitWrapper(x.user.username);
+                    console.log(memberName[i]);
+                    imagekit.upload({
+                        file: Buffer.from(memberName[i]),
+                        fileName: fileName[i] + '.txt',
+                        useUniqueFileName: false,
+                        folder: folder,
+                    }, (error, res) => {
+                        if(error) {
+                            console.log(error);
+                        } else {
+                            console.log(res);
+                            if (fileName[i+1]){
+                                imageKitWrapper(i+1);
+                            }
+                        }
+                    });
                 }
-            })
+                else if (fileName[i+1]){
+                    imageKitWrapper(i+1);
+                }
+            });
         });
         request.on('error', function (e) {
             console.log(e.message);
@@ -50,19 +54,9 @@ const initiateNewGuild = function(guild) {
         request.end();
     }
 
-    // guild.members.cache
-    // .filter(x => x.user.bot)
-    // .each(x => {
-    //     fileName = x.user.id + ".txt";
- 
-    // });
-    
-    // fileName = "Babibu.txt";
-    // imageKitWrapper("test");
-
-//     for (let i = 0; i < members.length; i++){
-        
-//     }
+    if (memberName.length >= 1){
+        imageKitWrapper(0);
+    }
 };
 
 module.exports = {
