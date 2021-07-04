@@ -2,7 +2,7 @@ const { MessageEmbed, TextChannel, Guild } = require('discord.js');
 const { Discord, client, puppeteer, on, fs, http } = require('./files/core_module.js');
 const { ping, isNumber, dayOfYear, changePrefix, genshin, updateDB, initiateNewGuild } = require('./files/function_lists.js');
 
-var prefix = "!";
+var globalPrefix = "!";
 
 var email = ['jeffryco.ardiya', 'willie.soo', 'albert.lucky'];
 var pass = ['b!Nu$21042002', 'b!Nu$01082002', 'Eap180218'];
@@ -62,7 +62,7 @@ client.on('message', (msg) => {
         }
     }
 
-    if (!msg.content.startsWith(prefix) || msg.author.bot) return;
+    if (!msg.content.startsWith(prefix) || !msg.content.startsWith(globalPrefix) || msg.author.bot) return;
 
     let args = msg.content.slice(prefix.length).split(" ");
     let words = "";
@@ -280,7 +280,7 @@ client.on('message', (msg) => {
             break;
         case 'help': 
             let commands, description;
-            fs.readFile('command-list.txt', async function read(err, data) {
+            fs.readFile('command-list.txt', function read(err, data) {
                 if (err) throw err;
                 commands = data.toString().split('\r\n\r\n')[0].split(';\r\n');
                 description = data.toString().split('\r\n\r\n')[1].split(';\r\n');
@@ -402,7 +402,7 @@ client.on('message', (msg) => {
             break;
         default:
             msg.channel.send('Wrong command input');
-            initiateNewGuild(msg.guild);
+            console.log(msg);
             
             break;
     }
