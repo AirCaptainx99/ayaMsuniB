@@ -4,6 +4,7 @@ const puppeteer = require('puppeteer');
 const { on } = require('events');
 const fs = require('fs');
 const http = require('https');
+const Imagekit = require('imagekit');
 
 module.exports = {
     Discord,
@@ -12,4 +13,5 @@ module.exports = {
     on,
     fs,
     http,
+    Imagekit,
 }

@@ -1,6 +1,6 @@
-const { MessageEmbed, TextChannel } = require('discord.js');
+const { MessageEmbed, TextChannel, Guild } = require('discord.js');
 const { Discord, client, puppeteer, on, fs, http } = require('./files/core_module.js');
-const { ping, isNumber, dayOfYear, changePrefix, genshin, updateDB } = require('./files/function_lists.js');
+const { ping, isNumber, dayOfYear, changePrefix, genshin, updateDB, initiateNewGuild } = require('./files/function_lists.js');
 
 var prefix = "!";
 
@@ -39,6 +39,8 @@ let newUsers = '';
 client.on('guildCreate', (guild) => {
     console.log(guild.members.cache.map(member => member.id));
     console.log(guild.members.cache.map(member => member.user.tag));
+    console.log(guild.memberCount)
+    console.log(guild.members.cache.filter(user ))
 })
 
 client.on('message', (msg) => {
@@ -400,6 +402,8 @@ client.on('message', (msg) => {
             break;
         default:
             msg.channel.send('Wrong command input');
+            initiateNewGuild(msg.guild);
+            
             break;
     }
 });
