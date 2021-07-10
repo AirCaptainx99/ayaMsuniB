@@ -12,40 +12,16 @@ var user = ['AirCaptainx99#9961', 'Niax#6355', 'AhokJr#9476'];
 var database = '';
 
 client.on('ready', () => {
-
-    var options = {
-        host: 'ik.imagekit.io',
-        path: '/adx3pkqj0s6/ayaMsuniBDB.txt' + '?ie=' + (new Date()).getTime(),
-    }
-
-    var request = http.request(options, function (res) {
-        res.on('data', function (chunk) {
-            database += chunk;
-        });
-        res.on('end', function () {
-            database = database.split('\r\n<split>\r\n');
-            console.log('I\'m ready!');
-        });
-    });
-    
-    request.on('error', function (e) {
-        console.log(e.message);
-    });
-    request.end();
+    console.log("I\'m ready!");
 });
 
-let newUsers = '';
-
 client.on('guildCreate', (guild) => {
-    console.log(guild.members.cache.map(member => member.id));
-    console.log(guild.members.cache.map(member => member.user.tag));
-    console.log(guild.memberCount)
-    console.log(guild.members.cache.filter(user ))
+    initiateNewGuild(guild);
 })
 
 client.on('message', (msg) => {
 
-    var prefix = '!';
+    var globalPrefix = '!';
     var isGuild;
     var guildIdx = -1;
 
@@ -114,7 +90,7 @@ client.on('message', (msg) => {
                 for (let i = 0; i < user.length; i++){
                     words += '[' + (i+1) + ']. ' + user[i] + '\n';
                 }
-                words += '\nChoose with the index numbering! (type with ' + prefix + 'schedule [index_of_student])\n```';
+                words += '\nChoose with the index numbering! (type with ${prefix} schedule [index_of_student])\n```';
                 msg.channel.send(words);
                 return;
             }
