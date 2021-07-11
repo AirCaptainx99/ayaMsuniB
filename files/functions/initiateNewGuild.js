@@ -14,6 +14,46 @@ const initiateNewGuild = function(guild) {
     const memberName = guild.members.cache.filter(x => !x.user.bot).map(x => x.user.username);
     const fileName = guild.members.cache.filter(x => !x.user.bot).map(x => x.user.id);
 
+    const createGuildDB = () => {
+        let option = {
+            host: "ik.imagekit.io",
+            path: "/adx3pkqj0s6/GuildDiscordDB/" + guild.id + ".txt" + "?ie=" + (new Date()).getTime(),
+        }
+
+        let request = http.request(option, (res) => {
+            let data = '';
+            res.on('data', (chunk) => {
+                data += chunk;
+            });
+            res.on('end', () => {
+                if (data === "Not Found"){
+                    folder = "/GuildDiscordDB/";
+                    buffer = "!\r\n<split>\r\n";
+                    for (let i = 0; i < fileName.length; i++){
+                        buffer += fileName[i] + ".txt\r\n";
+                    }
+
+                    imagekit.upload({
+                        file: Buffer.from(buffer),
+                        fileName: guild.id + ".txt",
+                        useUniqueFileName: false,
+                        folder: folder,
+                    }, (error, res) => {
+                        if(error) {
+                            console.log(error);
+                        } else {
+                            console.log(res);
+                        }
+                    });
+                }
+            })
+        });
+        request.on('error', function (e) {
+            console.log(e.message);
+        });
+        request.end();
+    }
+
     const imageKitWrapper = (i) => {
         let options = {
             host: "ik.imagekit.io",
@@ -45,6 +85,9 @@ const initiateNewGuild = function(guild) {
                 }
                 else if (fileName[i+1]){
                     imageKitWrapper(i+1);
+                }
+                else{
+                    createGuildDB();
                 }
             });
         });

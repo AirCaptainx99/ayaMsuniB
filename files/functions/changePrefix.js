@@ -1,27 +1,62 @@
-const { updateDB } = require('./updateDB.js');
-const { createDBTemplate } = require('./createDBTemplate.js');
+let { Imagekit, Discord, http } = require('../core_module.js');
 
-const changePrefix = function(msg, database, newPrefix){
-    var isInDB = false;
-    var newDB = '';
-    for (var i = 0; i < database.length - 1; i++){
-        if (msg.guild.id === database[i].split("\r\n<data>\r\n")[0]){
-            newDB = database[i].split("\r\n<data>\r\n");
-            newDB[1] = newPrefix;
-            database[i] = '';
-            
-            for (var j = 0; j < newDB.length; j++){
-                database[i] += newDB[j];
-                if (j === newDB.length - 1) break;
-                database[i] += "\r\n<data>\r\n";
-            }
-            isInDB = true;
-            console.log(database);
-            break;
-        }
+let changePrefix = (msg, pref) => {
+    getDatabase(msg, pref);
+}
+
+let getDatabase = (msg, pref) => {
+    let data = '';
+    let options = {
+        host: "ik.imagekit.io",
+        path: "/adx3pkqj0s6/GuildDiscordDB/" + msg.guild.id + ".txt" + "?ie=" + (new Date()).getTime(),
     }
-    createDBTemplate(msg, database, newPrefix, "ayaMsuniBDB.txt");
-    // return (isInDB) ? updateDB(database, "ayaMsuniBDB.txt") : createDBTemplate(msg, database, newPrefix, "ayaMsuniBDB.txt");
+    let request = http.request(options, (res) => {
+        res.on('data', (chunk) => {
+            data += chunk;
+        });
+        res.on('end', () => {
+            change(msg, pref, data);
+        });
+    });
+    request.on('error', (err) => {
+        console.log(err);
+    })
+    request.end();
+}
+
+let change = (msg, pref, data) => {
+    let oldDB = data.split('\r\n<split>\r\n');
+    let newDB = pref + '\r\n<split>\r\n' + oldDB[1];
+
+    update(msg, pref, newDB);
+}
+
+let update = (msg, pref, data) => {
+    let imagekit = new Imagekit({
+        publicKey : "public_BY4rH/oQzUDkghcLA2LVPL0ex7g=",
+        privateKey : "private_hsWNeK5l9+wuOS3uoXQ0rKeOcwg=",
+        urlEndpoint : "https://ik.imagekit.io/adx3pkqj0s6",
+    });
+
+    imagekit.upload({
+        file: Buffer.from(data),
+        fileName: msg.guild.id + '.txt',
+        useUniqueFileName: false,
+        folder: '/GuildDiscordDB/',
+    }, (error, res) => {
+        if (error){
+            console.log(error);
+        }
+        else{
+            console.log(res);
+        }
+    });
+
+    let message = new Discord.MessageEmbed()
+    .setColor("WHITE")
+    .setDescription("The prefix has been changed into " + pref);
+
+    msg.channel.send(message);
 }
 
 module.exports = {
