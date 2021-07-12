@@ -7,6 +7,7 @@ const { changePrefix } = require('./functions/changePrefix.js');
 const { genshin } = require('./functions/genshin.js');
 const { initiateNewGuild } = require('./functions/initiateNewGuild.js');
 const { getID } = require('./functions/getID.js');
+const { schedule } = require('./functions/schedule.js');
 
 module.exports = {
     ping,
@@ -18,5 +19,5 @@ module.exports = {
     genshin,
     initiateNewGuild,
     getID,
-
+    schedule,
 }

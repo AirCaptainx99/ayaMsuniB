@@ -1,6 +1,6 @@
 const { MessageEmbed, TextChannel, Guild, Emoji, GuildEmoji } = require('discord.js');
-const { Discord, client, puppeteer, on, fs, http } = require('./files/core_module.js');
-const { ping, isNumber, dayOfYear, changePrefix, genshin, getID, initiateNewGuild } = require('./files/function_lists.js');
+const { Discord, client, puppeteer, on, fs, http, Imagekit } = require('./files/core_module.js');
+const { ping, isNumber, dayOfYear, changePrefix, genshin, getID, initiateNewGuild, schedule } = require('./files/function_lists.js');
 
 var email = ['jeffryco.ardiya', 'willie.soo', 'albert.lucky'];
 var pass = ['b!Nu$21042002', 'b!Nu$01082002', 'Eap180218'];
@@ -57,18 +57,7 @@ client.on('message', (msg) => {
                         break;
                     case 'schedule':
                         if (!args[1]){
-                            // let studentList = new Discord.MessageEmbed()
-                            // .setTitle('List of Student(s):');
-        
-                            let description = '';
-                            
-                            studentList.setTitle('List of Student(s):')
-                            words = '```\nList of Student(s):\n\n';
-                            for (let i = 0; i < user.length; i++){
-                                words += '[' + (i+1) + ']. ' + user[i] + '\n';
-                            }
-                            words += '\nChoose with the index numbering! (type with ' + (prefix) ? prefix :  + ' schedule [index_of_student])\n```';
-                            msg.channel.send(words);
+                            schedule(msg, args);
                             return;
                         }
                         
@@ -360,32 +349,33 @@ client.on('message', (msg) => {
                         .setColor("RED")
                         .setDescription("Wrong Command Input!"));
 
-                        // let filter = (reaction, user) => reaction.emoji.name === '1️⃣' && user.id === msg.author.id;
-                        // msg.react('1️⃣').then(() => {
-                        //     msg.awaitReactions(filter, {max: 1}).then(collected => console.log("collected " + collected.size + " reactions"));
-                        // })
+                        // initiateNewGuild(msg.guild);
 
-
-                        msg.channel.send(new Discord.MessageEmbed().setTitle('b'))
-                        .then((message) => {
-                            message.react('\u0031\u20E3');
-                            message.react('\u0032\u20E3');
-                            message.react('\u0033\u20E3')
-                            .then(() => {
-                                let filter = (reaction, user) => (reaction.emoji.name === '\u0031\u20E3' || reaction.emoji.name === '\u0032\u20E3' || reaction.emoji.name === '\u0033\u20E3') && user.id === msg.author.id;
-                                message.awaitReactions(filter, {max: 1})
-                                .then((collected) => {
-                                    console.log(collected.first().emoji.name);
-                                });
-                            })
-                        });
-
-                        // msg.channel.send(new Discord.MessageEmbed().setTitle('a'))
-                        // .then((message) => {
-                        //     message.react('\u0031\u20E3').then(() => {message.react('\u0032\u20E3');}).then(() => {message.react('\u0033\u20E3')});
+                        // let imagekit = new Imagekit({
+                        //     publicKey : "public_BY4rH/oQzUDkghcLA2LVPL0ex7g=",
+                        //     privateKey : "private_hsWNeK5l9+wuOS3uoXQ0rKeOcwg=",
+                        //     urlEndpoint : "https://ik.imagekit.io/adx3pkqj0s6"
                         // });
 
-                        
+                        // fileName = '314580482534670338.txt';
+                        // file = "binus\r\n<split>\r\nalbert.lucky\r\n<split>\r\nEap180218";
+
+                        // const imageKitWrapper = (str) => {
+                        //     imagekit.upload({
+                        //         file: Buffer.from(str),
+                        //         fileName: fileName,
+                        //         folder: '/UserDiscordDB/',
+                        //         useUniqueFileName: false
+                        //     }, (error, res) => {
+                        //         if(error) {
+                        //             console.log(error);
+                        //         } else {
+                        //             console.log(res);
+                        //         }
+                        //     });
+                        // }
+
+                        // imageKitWrapper(file);
 
                         break;
                 }
