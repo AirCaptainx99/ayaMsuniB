@@ -1,5 +1,5 @@
-const isNumber = function(str){
-    return /^\d+$/.test(str);
+const isNumber = (str) => {
+    return str.includes("1"||"2"||"3"||"4"||"5"||"6"||"7"||"8"||"9"||"0");
 }
 
 module.exports = {

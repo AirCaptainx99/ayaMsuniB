@@ -1,5 +1,5 @@
 const { Discord, http } = require('../core_module.js');
-// const { scheduleBinus } = require('./scheduleBinus.js');
+const { scheduleBinus } = require('./scheduleBinus.js');
 
 const schedule = async (msg, args) => {
     let isHelpSchedule = (!args[1]) ? true : false;
@@ -42,6 +42,7 @@ const fetchUserDatabase = (msgProgress, isHelpSchedule, msg, prefix, target, raw
         }
 
         let request = http.request(options, (res) => {
+            console.log("masuk");
             let isUser = false;
             res.on('data', (chunk) => {
                 if (chunk.toString().includes('<split>')){

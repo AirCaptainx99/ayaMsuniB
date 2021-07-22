@@ -1,4 +1,3 @@
-const { MessageEmbed } = require('discord.js');
 const { Discord } = require('../core_module.js');
 
 const freedom = ["Amber", "Barbara", "Klee", "Sucrose", "Childe", "Diona"];

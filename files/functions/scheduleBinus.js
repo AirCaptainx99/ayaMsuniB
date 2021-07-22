@@ -1,7 +1,37 @@
-const { Discord } = require('../core_module.js');
-const { isNumber } = require('../function_lists.js')
+const { Discord, http, puppeteer } = require('../core_module.js');
+const { isNumber } = require('./isNumber.js');
 
-const scheduleBinus = (msg, args) => {
+let msg = new Discord.Message();
+let args = new String();
+
+let scheduleBinus = (msg1, args1) => {
+    msg = msg1;
+    args = args1;
+    checkDatabase(msg, args);
+}
+
+let checkGuildDatabase = (msg, args) => {
+    let options = {
+        host: "ik.imagekit.io",
+        path: "/adx3pkqj0s6/GuildDiscordDB/" + msg.guild.id + ".txt" + "?ie=" + (new Date()).getTime(),
+    }
+
+    let request = http.request(options, (res) => {
+        let data = '';
+        res.on('data', (chunk) => {
+            data += chunk;
+        });
+        res.on('end', () => {
+
+        })
+    })
+    request.on('error', (err) => {
+        console.log(err);
+    });
+    request.end();
+}
+
+const createList = (msg, args) => {
     if (!args[1]){
         words = '```\nList of Student(s):\n\n';
         for (let i = 0; i < user.length; i++){

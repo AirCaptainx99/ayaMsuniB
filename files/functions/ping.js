@@ -1,4 +1,4 @@
-const ping = function(msg){
+const ping = (msg) => {
     msg.channel.send('Pong!');
 }
 

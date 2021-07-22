@@ -1,10 +1,11 @@
 let { Discord, http } = require('../core_module.js');
 
-let register = (msg) => {
+const register = (msg) => {
     verification(msg);
 }
 
-let verification = (msg) => {
+const verification = (msg) => {
+
     let options = {
         host: "ik.imagekit.io",
         path: "/adx3pkqj0s6/UserDiscordDB/" + msg.author.id + ".txt" + "?ie=" + (new Date()).getTime(),
@@ -14,9 +15,9 @@ let verification = (msg) => {
         let data = "";
         res.on('data', (chunk) => {
             data += chunk;
-        })
+        });
         res.on('end', () => {
-            if (data.includes("\r\n<split>\r\n")){
+            if (data.includes("<split>")){
                 msg.client.users.cache.get(msg.author.id).send(
                     (new Discord.MessageEmbed()
                     .setColor("RED")
@@ -29,17 +30,17 @@ let verification = (msg) => {
             else{
                 form(msg);
             }
-        })
-        request.on("error", (err) => {
-            console.log(err);
         });
-        request.end();
     });
+    request.on("error", (err) => {
+        console.log(err);
+    });
+    request.end();
 }
 
-let univ = ["BINUS"];
+const univ = ["BINUS"];
 
-let form = (msg) => {
+const form = (msg) => {
     let message = '';
     for (let i = 0; i < univ.length; i++){
         message += "[" + [i+1] + "]. " + univ[i] + "\n";

@@ -1,4 +1,4 @@
-let { Imagekit, Discord, http } = require('../core_module.js');
+let { Discord, http, imagekit } = require('../core_module.js');
 
 let changePrefix = (msg, pref) => {
     getDatabase(msg, pref);
@@ -32,12 +32,6 @@ let change = (msg, pref, data) => {
 }
 
 let update = (msg, pref, data) => {
-    let imagekit = new Imagekit({
-        publicKey : "public_BY4rH/oQzUDkghcLA2LVPL0ex7g=",
-        privateKey : "private_hsWNeK5l9+wuOS3uoXQ0rKeOcwg=",
-        urlEndpoint : "https://ik.imagekit.io/adx3pkqj0s6",
-    });
-
     imagekit.upload({
         file: Buffer.from(data),
         fileName: msg.guild.id + '.txt',
