@@ -1,14 +1,26 @@
+const { MessageEmbed } = require('discord.js');
 const { Discord, http } = require('../core_module.js');
 const { scheduleBinus } = require('./scheduleBinus.js');
 
-const schedule = async (msg, args) => {
+const schedule = async (database, guildIdx, msg, args) => {
     let isHelpSchedule = (!args[1]) ? true : false;
+    let listOfStudents = [];
+    let idx = 0;
+    if (isHelpSchedule){
+        database.guildProperty.guildMember[guildIdx].forEach((member) => {
+            if (database.userList.includes(member)){
+                listOfStudents[idx++] = "`[" + [idx] + "]`. " + "<@!" + member + ">";
+            }
+        });
 
-    let msgProgress = await msg.channel.send(new Discord.MessageEmbed()
-    .setColor('YELLOW')
-    .setTitle('Fetching data from the database'));
+        msg.channel.send(new MessageEmbed()
+        .setColor("BLUE")
+        .setTitle("List of Registered Student(s)")
+        .setDescription(listOfStudents));
+    }
+    else{
 
-    fetchGuildDatabase(msgProgress, isHelpSchedule, msg, args[1]);
+    }
 }
 
 const fetchGuildDatabase = (msgProgress, isHelpSchedule, msg, target) => {

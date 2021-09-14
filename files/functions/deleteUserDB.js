@@ -1,11 +1,8 @@
-const { Discord, http, imagekit } = require('../core_module.js');
+const { firebase } = require('../config.js');
+const { Discord } = require('discord.js');
 
 const deleteUserDB = (msg) => {
-    imagekit.deleteFile();
-    imagekit.upload({
-
-    },
-    )
+    
 }
 
 module.exports = {

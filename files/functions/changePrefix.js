@@ -1,56 +1,18 @@
-let { Discord, http, imagekit } = require('../core_module.js');
+const { Discord, MessageEmbed } = require("discord.js");
+const { firebase } = require("../config.js");
 
-let changePrefix = (msg, pref) => {
-    getDatabase(msg, pref);
-}
-
-let getDatabase = (msg, pref) => {
-    let data = '';
-    let options = {
-        host: "ik.imagekit.io",
-        path: "/adx3pkqj0s6/GuildDiscordDB/" + msg.guild.id + ".txt" + "?ie=" + (new Date()).getTime(),
-    }
-    let request = http.request(options, (res) => {
-        res.on('data', (chunk) => {
-            data += chunk;
-        });
-        res.on('end', () => {
-            change(msg, pref, data);
-        });
+const changePrefix = (database, guildIdx, msg, newPrefix) => {
+    const dbRef = firebase.database().ref("/guild/" + msg.guild.id);
+    dbRef.update({
+        "prefix": newPrefix,
     });
-    request.on('error', (err) => {
-        console.log(err);
-    })
-    request.end();
-}
+    database.guildProperty.prefix[guildIdx] = newPrefix;
+    console.log(guildIdx);
 
-let change = (msg, pref, data) => {
-    let oldDB = data.split('\r\n<split>\r\n');
-    let newDB = pref + '\r\n<split>\r\n' + oldDB[1];
-
-    update(msg, pref, newDB);
-}
-
-let update = (msg, pref, data) => {
-    imagekit.upload({
-        file: Buffer.from(data),
-        fileName: msg.guild.id + '.txt',
-        useUniqueFileName: false,
-        folder: '/GuildDiscordDB/',
-    }, (error, res) => {
-        if (error){
-            console.log(error);
-        }
-        else{
-            console.log(res);
-        }
-    });
-
-    let message = new Discord.MessageEmbed()
-    .setColor("WHITE")
-    .setDescription("The prefix has been changed into " + pref);
-
-    msg.channel.send(message);
+    msg.channel.send(new MessageEmbed()
+    .setColor("GREEN")
+    .setTitle("Success!")
+    .setDescription("Your prefix has been changed into " + database.guildProperty.prefix[guildIdx]));
 }
 
 module.exports = {
