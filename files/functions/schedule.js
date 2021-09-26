@@ -1,6 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 const { Discord, http } = require('../core_module.js');
 const { scheduleBinus } = require('./scheduleBinus.js');
+const { isNumber } = require('./isNumber.js');
 
 const schedule = async (database, guildIdx, msg, args) => {
     let isHelpSchedule = (!args[1]) ? true : false;
@@ -19,7 +20,32 @@ const schedule = async (database, guildIdx, msg, args) => {
         .setDescription(listOfStudents));
     }
     else{
+        let userTarget = args[1] - 1;
+        let studentIdx = 0;
+        let isValid = false;
+        for (let i = 0; i < database.userList.length; i++){
+            if (userTarget === studentIdx) {
+                isValid = true;
+                break;
+            }
+            if (database.guildProperty.guildMember[guildIdx].includes(database.userList[i])) studentIdx++;
+        }
 
+        if (isValid){
+            switch(database.userProperty.univ[studentIdx]){
+                case 'binus':
+                    scheduleBinus(database, studentIdx, msg, args);
+                    break;
+                case 'ubm':
+                    scheduleUbm(database, studentIdx, msg, args);
+                    break;
+                default:
+                    break;
+            }
+        }
+        else{
+            msg.channel.send("Bruh, wrong parameter");
+        }
     }
 }
 

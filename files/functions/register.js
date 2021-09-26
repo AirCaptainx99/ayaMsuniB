@@ -1,7 +1,14 @@
 const { Discord } = require('../core_module.js');
+const { registerBinus } = require('./registerBinus.js');
 
 const register = (database, msg) => {
-    let registered = database.userList.includes(msg.author.id);
+    let registered = false;
+    for (let i = 0; i < database.userList.length; i++){
+        if (database.userList[i] === msg.author.id){
+            registered = true;
+            break;
+        }
+    }
 
     if (registered){
         msg.channel.send(new Discord.MessageEmbed()
@@ -11,13 +18,13 @@ const register = (database, msg) => {
         return;
     }
     else{
-        form(msg);
+        return form(database, msg);
     }
 }
 
-const univ = ["BINUS", "UBM", "UNTAR"];
+const univ = ["BINUS"];
 
-const form = (msg) => {
+const form = (database, msg) => {
     let message = '';
     for (let i = 0; i < univ.length; i++){
         message += "[" + [i+1] + "]. " + univ[i] + "\n";
@@ -40,10 +47,10 @@ const form = (msg) => {
             emojiList.includes(response.emoji.name)) && user.id
         let collector = await message.createReactionCollector(filter);
         
-        collector.on('remove' || 'collect', (response, user) => {
+        collector.on('collect' , (response, user) => {
             switch(response.emoji.name){
                 case emojiList[0]:{
-                    console.log("binus");
+                    return registerBinus(database, message);
                     break;
                 }
                 case emojiList[1]:{

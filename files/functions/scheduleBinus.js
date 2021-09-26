@@ -1,75 +1,16 @@
 const { Discord, http, puppeteer } = require('../core_module.js');
 const { isNumber } = require('./isNumber.js');
+const { dayOfYear } = require('./dayOfYear.js');
 
-let msg = new Discord.Message();
-let args = new String();
+let scheduleBinus = (database, studentIdx, msg, args) => {
+    let email = database.userProperty.email[studentIdx];
+    let pass = database.userProperty.pass[studentIdx];
+    let userId = database.userList[studentIdx];
 
-let scheduleBinus = (msg1, args1) => {
-    msg = msg1;
-    args = args1;
-    checkDatabase(msg, args);
-}
-
-let checkGuildDatabase = (msg, args) => {
-    let options = {
-        host: "ik.imagekit.io",
-        path: "/adx3pkqj0s6/GuildDiscordDB/" + msg.guild.id + ".txt" + "?ie=" + (new Date()).getTime(),
-    }
-
-    let request = http.request(options, (res) => {
-        let data = '';
-        res.on('data', (chunk) => {
-            data += chunk;
-        });
-        res.on('end', () => {
-
-        })
-    })
-    request.on('error', (err) => {
-        console.log(err);
-    });
-    request.end();
-}
-
-const createList = (msg, args) => {
-    if (!args[1]){
-        words = '```\nList of Student(s):\n\n';
-        for (let i = 0; i < user.length; i++){
-            words += '[' + (i+1) + ']. ' + user[i] + '\n';
-        }
-        words += '\nChoose with the index numbering! (type with ' + prefix + 'schedule [index_of_student])\n```';
-        msg.channel.send(words);
-        return;
-    }
-    
-    else{
-        let selectEmail, selectPass, selectID, dayAmount;
-        if (isNumber(args[1])){
-            if (args[1] > user.length || args[1] <= 0) {
-                msg.channel.send('Index not valid!');
-                return;
-            }
-            selectEmail = email[args[1] - 1];
-            selectPass = pass[args[1] - 1];
-            selectID = userID[args[1] - 1];
-        }
-
-        else if (!isNumber(args[1])){
-            let key = args[1].toLowerCase();
-            for (let i = 0; i < email.length; i++){
-                if (user[i].toLowerCase().includes(key)){
-                    selectEmail = email[i];
-                    selectPass = pass[i];
-                    selectID = userID[i];
-                    break;
-                }
-            }
-        }
-
-        if (args[2]){
+    if (args[2]){
             if (!(args[2].toLowerCase() === 'max') && !isNumber(args[2])){
                 let err = new Discord.MessageEmbed()
-                .setColor('#FFFFFF')
+                .setColor('RED')
                 .setTitle('Second Argument is not valid!');
                 msg.channel.send(err);
                 return;
@@ -78,6 +19,7 @@ const createList = (msg, args) => {
         
         (async () => {
             let progressInfo = new Discord.MessageEmbed()
+            .setColor('GREEN')
             .setTitle('Acquiring data from the website');
             let progressMsg = await msg.channel.send(progressInfo);
 
@@ -92,9 +34,9 @@ const createList = (msg, args) => {
             await Promise.all([
                 await page.goto('https://myclass.apps.binus.ac.id/Auth'),
                 await page.click('.user-input'),
-                await page.keyboard.type(selectEmail),
+                await page.keyboard.type(email),
                 await page.click('.custom-textbox'),
-                await page.keyboard.type(selectPass),
+                await page.keyboard.type(pass),
                 await page.click('#btnSubmit'),
                 await page.waitForNavigation({waitUntil: 'networkidle0'})
             ]);
@@ -133,14 +75,14 @@ const createList = (msg, args) => {
 
             if (result.date.length == 2){
                 progressInfo = new Discord.MessageEmbed()
-                .setColor('#FFFFFF')
                 .setTitle('Schedule List')
-                .setDescription('Owner: [<@!' + selectID + '>]' + '\n\n' + '**No upcoming class in the near future!**');
+                .setDescription('Owner: [<@!' + userId + '>]' + '\n\n' + '**No upcoming class in the near future!**');
 
                 progressMsg.edit(progressInfo);
             }
             else{ 
                 progressInfo = new Discord.MessageEmbed()
+                .setColor('YELLOW')
                 .setTitle('Creating List of Schedule');
                 progressMsg.edit(progressInfo);
 
@@ -154,9 +96,9 @@ const createList = (msg, args) => {
                 serverTime = serverTime[1] + ' ' + serverTime[2] + ' ' + serverTime[3];
 
                 progressInfo = new Discord.MessageEmbed()
-                .setColor('#FFFFFF')
+                .setColor('BLUE')
                 .setTitle('Schedule List')
-                .setDescription('Owner: [<@!' + selectID + '>]');
+                .setDescription('Owner: [<@!' + userId + '>]');
 
                 (!args[2]) ? dayAmount = 0 : dayAmount = args[2];
 
@@ -199,8 +141,9 @@ const createList = (msg, args) => {
             }
             await browser.close();
         })();
-    }
 }
+
+
 
 module.exports = {
     scheduleBinus,

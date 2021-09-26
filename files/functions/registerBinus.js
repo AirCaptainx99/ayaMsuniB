@@ -5,7 +5,7 @@ const { addUserDB } = require('./addUserDB.js');
 
 var userId, email, pass, univ;
 
-function regisForm(msg) {
+function regisForm(database, msg) {
     if (msg.author.bot){
         return;
     }
@@ -87,25 +87,39 @@ function verifyForm(msg){
     }
     else if (msg.content.toLowerCase().includes("n")){
         client.off("message", verifyForm);
-        registerBinus(msg);
-        return;
+        return registerBinus(msg);
+        
     }
 
     if (verified){
-        updateDB(msg, userId, email, pass, univ);
+        return updateDB(msg, userId, email, pass, univ);
     }
 }
 
-function updateDB(msg, userId, email, pass, univ){
+async function updateDB (msg, userId, email, pass, univ){
     client.off("message", regisForm);
-    // addUserDB(userId, email, pass, univ);
+    await addUserDB(userId, email, pass, univ);
+    let newStudentIdx;
+
+    for (let i = 0; i < database.userList.length; i++){
+        if (userId < database.userList[i]){
+            newStudentIdx = i;
+            database.userList.splice(newStudentIdx, 0, userId);
+            database.userProperty.email.splice(newStudentIdx, 0, email);
+            database.userProperty.pass.splice(newStudentIdx, 0, pass);
+            database.userProperty.univ.splice(newStudentIdx, 0, univ);
+            database.userProperty.forumCount.splice(newStudentIdx, 0, 0);
+            break;
+        }
+    }
     msg.channel.send(new Discord.MessageEmbed()
     .setTitle("Success")
     .setDescription("Your registration is successful")
     .setColor("GREEN"));
+    return database;
 }
 
-const registerBinus = (msg) => {
+const registerBinus = (database, msg) => {
     msg.channel.send(new Discord.MessageEmbed()
     .setTitle("Registration Form")
     .setDescription(
