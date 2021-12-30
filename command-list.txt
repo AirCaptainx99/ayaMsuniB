@@ -7,6 +7,7 @@ schedule [username_of_student] [length_of_days];
 register;
 id;
 genshin
+salt;
 
 Pong!;
 To change the prefix of the bot's;
@@ -17,3 +18,4 @@ To get the schedule of the student with their discord name, input numbers on the
 To register your account;
 To get your discord ID;
 Show Talent Farmables
+saltpic;
