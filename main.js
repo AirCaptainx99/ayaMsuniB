@@ -2,7 +2,7 @@ const { MessageEmbed, TextChannel, Guild, Emoji, GuildEmoji } = require('discord
 const { Discord, client, puppeteer, on, fs, http } = require('./files/core_module.js');
 const { getDB } = require('./files/functions/getDB.js');
 const { register } = require('./files/functions/register.js');
-const { ping, dayOfYear, changePrefix, genshin, getID, initiateNewGuild, schedule, addUserDB, registerBinus } = require('./files/function_lists.js');
+const { ping, dayOfYear, changePrefix, genshin, getID, initiateNewGuild, schedule, addUserDB, registerBinus, salt } = require('./files/function_lists.js');
 const { isNumber } = require('./files/functions/isNumber.js');
 
 var database = {
@@ -91,6 +91,9 @@ client.on('message', (msg) => {
                 case 'genshin':
                     var day = (new Date()).getDay();
                     genshin(msg ,day);
+                    break;
+                case 'salt':
+                    salt(msg);
                     break;
                 default:
                     msg.channel.send(new Discord.MessageEmbed()
