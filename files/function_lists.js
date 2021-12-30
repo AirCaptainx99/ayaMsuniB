@@ -12,6 +12,7 @@ const { register } = require('./functions/register.js');
 const { registerBinus } = require('./functions/registerBinus.js');
 const { schedule } = require('./functions/schedule.js');
 const { scheduleBinus } = require('./functions/scheduleBinus.js');
+const { salt } = require('./functions/salt.js');
 
 module.exports = {
     addUserDB,
@@ -28,4 +29,5 @@ module.exports = {
     registerBinus,
     schedule,
     scheduleBinus,
+    salt,
 }
